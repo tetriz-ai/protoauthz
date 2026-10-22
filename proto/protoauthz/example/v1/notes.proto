@@ -1,0 +1,86 @@
+// Copyright 2026 The protoauthz Authors
+// SPDX-License-Identifier: MIT
+
+syntax = "proto3";
+
+// Package protoauthz.example.v1 is a small notes service used by the tests and
+// the examples. Every RPC carries an auth_level.
+package protoauthz.example.v1;
+
+import "protoauthz/v1/auth_level.proto";
+
+option go_package = "github.com/tetriz-ai/protoauthz/gen/protoauthz/example/v1;examplev1";
+
+// NoteService stores short notes.
+service NoteService {
+  // GetVersion is public.
+  rpc GetVersion(GetVersionRequest) returns (GetVersionResponse) {
+    option (protoauthz.v1.auth_level) = AUTH_LEVEL_UNAUTHENTICATED;
+  }
+  // ListNotes needs any signed-in caller.
+  rpc ListNotes(ListNotesRequest) returns (ListNotesResponse) {
+    option (protoauthz.v1.auth_level) = AUTH_LEVEL_AUTHENTICATED;
+  }
+  // WatchNotes streams notes to any signed-in caller.
+  rpc WatchNotes(WatchNotesRequest) returns (stream WatchNotesResponse) {
+    option (protoauthz.v1.auth_level) = AUTH_LEVEL_AUTHENTICATED;
+  }
+  // DeleteNote needs an admin.
+  rpc DeleteNote(DeleteNoteRequest) returns (DeleteNoteResponse) {
+    option (protoauthz.v1.auth_level) = AUTH_LEVEL_ADMIN;
+  }
+  // PurgeNotes needs a super admin.
+  rpc PurgeNotes(PurgeNotesRequest) returns (PurgeNotesResponse) {
+    option (protoauthz.v1.auth_level) = AUTH_LEVEL_SUPER_ADMIN;
+  }
+  // ExportNotes needs a caller on the application's allow-list.
+  rpc ExportNotes(ExportNotesRequest) returns (ExportNotesResponse) {
+    option (protoauthz.v1.auth_level) = AUTH_LEVEL_ALLOWLIST;
+  }
+}
+
+// GetVersionRequest has no fields.
+message GetVersionRequest {}
+
+// GetVersionResponse holds the server version.
+message GetVersionResponse {
+  string version = 1;
+}
+
+// ListNotesRequest has no fields.
+message ListNotesRequest {}
+
+// ListNotesResponse holds the notes.
+message ListNotesResponse {
+  repeated string notes = 1;
+}
+
+// WatchNotesRequest has no fields.
+message WatchNotesRequest {}
+
+// WatchNotesResponse holds one note.
+message WatchNotesResponse {
+  string note = 1;
+}
+
+// DeleteNoteRequest names the note to delete.
+message DeleteNoteRequest {
+  string note = 1;
+}
+
+// DeleteNoteResponse has no fields.
+message DeleteNoteResponse {}
+
+// PurgeNotesRequest has no fields.
+message PurgeNotesRequest {}
+
+// PurgeNotesResponse has no fields.
+message PurgeNotesResponse {}
+
+// ExportNotesRequest has no fields.
+message ExportNotesRequest {}
+
+// ExportNotesResponse holds every note.
+message ExportNotesResponse {
+  repeated string notes = 1;
+}

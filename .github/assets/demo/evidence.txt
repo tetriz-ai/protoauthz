@@ -1,0 +1,16 @@
+Captured locally on 2026-10-20. Reproduce it with the commands below.
+
+Reproduction commands (repository root):
+scripts/run-examples.sh
+go run ./examples/deny-by-role
+go run ./examples/find-unannotated-rpcs
+
+Observed output:
+ok   custom-role-ladder
+ok   deny-by-role
+ok   find-unannotated-rpcs
+ok   grpc-server-with-login
+ok   scope-by-prefix
+ok   staff-allow-list
+deny-by-role: Unauthenticated / PermissionDenied / OK
+find-unannotated-rpcs: /protoauthz.example.draft.v1.NoteService/DeleteNote

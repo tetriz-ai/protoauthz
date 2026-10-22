@@ -1,0 +1,38 @@
+// Copyright 2026 The protoauthz Authors
+// SPDX-License-Identifier: MIT
+
+syntax = "proto3";
+
+// Package protoauthz.example.draft.v1 is a service with one RPC left
+// unannotated. The tests and the find-unannotated-rpcs example check it.
+package protoauthz.example.draft.v1;
+
+import "protoauthz/v1/auth_level.proto";
+
+option go_package = "github.com/tetriz-ai/protoauthz/gen/protoauthz/example/draft/v1;draftv1";
+
+// NoteService stores short notes.
+service NoteService {
+  // ListNotes needs any signed-in caller.
+  rpc ListNotes(ListNotesRequest) returns (ListNotesResponse) {
+    option (protoauthz.v1.auth_level) = AUTH_LEVEL_AUTHENTICATED;
+  }
+  // DeleteNote has no auth_level.
+  rpc DeleteNote(DeleteNoteRequest) returns (DeleteNoteResponse);
+}
+
+// ListNotesRequest has no fields.
+message ListNotesRequest {}
+
+// ListNotesResponse holds the notes.
+message ListNotesResponse {
+  repeated string notes = 1;
+}
+
+// DeleteNoteRequest names the note to delete.
+message DeleteNoteRequest {
+  string note = 1;
+}
+
+// DeleteNoteResponse has no fields.
+message DeleteNoteResponse {}

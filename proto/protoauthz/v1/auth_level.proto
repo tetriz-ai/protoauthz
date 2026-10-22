@@ -1,0 +1,36 @@
+// Copyright 2026 The protoauthz Authors
+// SPDX-License-Identifier: MIT
+
+syntax = "proto3";
+
+package protoauthz.v1;
+
+import "google/protobuf/descriptor.proto";
+
+option go_package = "github.com/tetriz-ai/protoauthz/gen/protoauthz/v1;protoauthzv1";
+
+// AuthLevel is what a caller needs to call an RPC.
+enum AuthLevel {
+  // AUTH_LEVEL_UNSPECIFIED is the zero value. Every call to an RPC at this
+  // level is denied.
+  AUTH_LEVEL_UNSPECIFIED = 0;
+  // AUTH_LEVEL_ADMIN requires an authenticated caller whose role ranks at or
+  // above the ladder's admin role.
+  AUTH_LEVEL_ADMIN = 1;
+  // AUTH_LEVEL_SUPER_ADMIN requires an authenticated caller whose role ranks
+  // at or above the ladder's super admin role.
+  AUTH_LEVEL_SUPER_ADMIN = 2;
+  // AUTH_LEVEL_UNAUTHENTICATED requires nothing: a public RPC.
+  AUTH_LEVEL_UNAUTHENTICATED = 3;
+  // AUTH_LEVEL_ALLOWLIST requires an authenticated caller that the
+  // application's allow-list callback accepts. It is not a role on the ladder.
+  AUTH_LEVEL_ALLOWLIST = 4;
+  // AUTH_LEVEL_AUTHENTICATED requires any authenticated caller, whatever
+  // the role.
+  AUTH_LEVEL_AUTHENTICATED = 5;
+}
+
+extend google.protobuf.MethodOptions {
+  // The level a caller needs to call this RPC.
+  AuthLevel auth_level = 2800105;
+}

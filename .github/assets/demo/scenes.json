@@ -1,0 +1,80 @@
+{
+  "accent": "#6356a4",
+  "output": "demo.png",
+  "disclosure": "Actual deny-by-role example outputs \u00b7 authentication is supplied by your application",
+  "scenes": [
+    {
+      "title": "Declare the access rule beside the RPC.",
+      "blocks": [
+        {
+          "label": "PROTO CONTRACT",
+          "rows": [
+            "rpc DeleteNote(\u2026) {",
+            "  option (protoauthz.v1.auth_level)",
+            "    = AUTH_LEVEL_ADMIN;",
+            "}"
+          ],
+          "box": [
+            36,
+            151,
+            490,
+            275
+          ],
+          "kind": "code",
+          "size": 18
+        },
+        {
+          "label": "COVERAGE TEST",
+          "rows": [
+            {
+              "text": "Unannotated RPC \u2192 test fails",
+              "state": "bad"
+            }
+          ],
+          "box": [
+            36,
+            438,
+            490,
+            144
+          ],
+          "kind": "rows",
+          "size": 20
+        },
+        {
+          "label": "DELETE NOTE",
+          "rows": [
+            {
+              "text": "Anonymous \u2192 Unauthenticated",
+              "state": "bad"
+            },
+            {
+              "text": "Member \u2192 PermissionDenied",
+              "state": "bad"
+            },
+            {
+              "text": "Admin \u2192 OK",
+              "state": "good"
+            }
+          ],
+          "box": [
+            576,
+            151,
+            488,
+            431
+          ],
+          "kind": "rows",
+          "size": 21
+        }
+      ],
+      "arrows": [
+        [
+          526,
+          320,
+          576,
+          320
+        ]
+      ]
+    }
+  ],
+  "name": "protoauthz"
+}
